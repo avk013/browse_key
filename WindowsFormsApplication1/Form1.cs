@@ -15,14 +15,15 @@ namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        string file_path = @"F:\brows123\1\";
+        string file_path = @"e:\brows123\1\";
         string[][] tab_array_in_double = null;
         int ch = 0;
         string regions = "garden";
+        string search_str1 = "https://www.yandex.ru/search/?text=", search_str2= "&lr=213&clid=9582&rstr=-213";
         public Form1()
         {
             InitializeComponent();
-            Gecko.Xpcom.Initialize(@"F:\brows123\xulrunner\bin");
+            Gecko.Xpcom.Initialize(@"e:\brows123\xulrunner\bin");
         }
         public void WriteQuery(string query)
         {
@@ -130,8 +131,11 @@ namespace WindowsFormsApplication1
 
         private void Form1_ClientSizeChanged(object sender, EventArgs e)
         {
+            tabControl1.Width = this.Width - 10;
+            tabControl1.Height = this.Height - 20;
+            tabControl1.Top = tabControl1.Left = 2;
             geckoWebBrowser1.Width = this.Width - 15;
-            geckoWebBrowser1.Height = this.Height - 15;
+            geckoWebBrowser1.Height = this.Height - 25;
             button6.Top = 70;
             button4.Top = 100;
             button5.Top = 200;
@@ -175,14 +179,14 @@ namespace WindowsFormsApplication1
 
         private void button4_Click(object sender, EventArgs e)
         {
-            geckoWebBrowser1.Navigate("https://www.yandex.ru/search/?text=" + tab_array_in_double[ch][1] + " "+regions+" &lr=213&clid=9582&rstr=-213");
+            geckoWebBrowser1.Navigate(search_str1 + tab_array_in_double[ch][1] + " "+regions+search_str2);
             File.AppendAllText(file_path+"2.csv", tab_array_in_double[ch - 1][0]+";"+tab_array_in_double[ch-1][1]+Environment.NewLine);
             ch++;
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            geckoWebBrowser1.Navigate("https://www.yandex.ru/search/?text=" + tab_array_in_double[ch][1] + " " + regions + " &lr=213&clid=9582&rstr=-213");
+            geckoWebBrowser1.Navigate(search_str1 + tab_array_in_double[ch][1] + " " + regions + search_str2);
             ch++;
         }
 
@@ -195,6 +199,12 @@ namespace WindowsFormsApplication1
         {
             regions = textBox1.Text;
            // textBox1.Text = regions + "+";
+        }
+
+        private void tabControl1_Deselecting(object sender, TabControlCancelEventArgs e)
+        {
+            search_str1 = tb_str1.Text;
+            search_str2 = tb_str2.Text;
         }
     }
 }
